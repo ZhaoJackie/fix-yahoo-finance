@@ -233,10 +233,15 @@ class Ticker():
         data = _requests.get(url=url, params=params).json()
 
         # Getting data from json
-        error = data["chart"]["error"]
-        if error:
-            raise ValueError(self.ticker, error["description"])
-
+        try:
+            error = data["chart"]["error"]
+            if error:
+                print(ValueError(self.ticker, error["description"]))
+                return _pd.DataFrame()
+        except Exception as e:
+            print(e)
+            return _pd.DataFrame()
+         
         # quotes
         quotes = self._parse_quotes(data["chart"]["result"][0])
 
